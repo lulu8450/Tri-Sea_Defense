@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bcb5cba536aaed44f9043dbd84f4184a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 302192
+  packageName: Hex Tile Placement Snapper
+  packageVersion: 1.0
+  assetPath: Assets/HexTilePlacementSnapper/Scripts/Editor/HexTileSnapperEditor.cs
+  uploadId: 707573

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: da17f32a00aabc64fa6039a0adf1127a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 302192
+  packageName: Hex Tile Placement Snapper
+  packageVersion: 1.0
+  assetPath: Assets/HexTilePlacementSnapper/Prefab/HexTilePlacementTool.prefab
+  uploadId: 707573

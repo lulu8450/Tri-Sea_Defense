@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6216f2d4501ef7143b5a7fa7123ccacd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 302192
+  packageName: Hex Tile Placement Snapper
+  packageVersion: 1.0
+  assetPath: Assets/HexTilePlacementSnapper/Example/Prefabs/LargeGrid.prefab
+  uploadId: 707573
