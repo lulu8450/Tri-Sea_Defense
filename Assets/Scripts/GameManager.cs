@@ -1,22 +1,25 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI; // important pour manipuler le Slider
 
 public class GameManager : MonoBehaviour
 {
-    // Le Singleton, pour pouvoir y accéder depuis n'importe où
     public static GameManager Instance { get; private set; }
 
     [Header("Base")]
     public int baseHealth = 10;
+    private int currentHealth;
+
+    [Header("UI")]
+    public Slider baseHealthBar;
 
     [Header("Ressources")]
     public int currentPearls = 0;
-    public int pearlsPerEnemy = 1; // Combien de perles par ennemi dtruit ?
+    public int pearlsPerEnemy = 1;
 
     [Header("Vagues d'ennemis")]
-    public WaveManager waveManager; // Référence au script qui gère les vagues
+    public WaveManager waveManager;
 
-    // On s'assure qu'il n'y a qu'un seul GameManager
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -27,31 +30,38 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
-
     }
 
-    // Fonction pour ajouter des perles
+    private void Start()
+    {
+        currentHealth = baseHealth;
+        if (baseHealthBar != null)
+        {
+            baseHealthBar.maxValue = baseHealth;
+            baseHealthBar.value = currentHealth;
+        }
+    }
+
     public void AddPearls(int amount)
     {
         currentPearls += amount;
         Debug.Log("Perles actuelles : " + currentPearls);
-        // TODO: Appeler une fonction de mise  jour de l'UI
     }
 
-    // Fonction pour réduire la vie de la base
     public void TakeDamage(int damage)
     {
-        baseHealth -= damage;
-        Debug.Log("Sant de la base : " + baseHealth);
+        currentHealth -= damage;
+        Debug.Log("Santé de la base : " + currentHealth);
 
-        if (baseHealth <= 0)
+        if (baseHealthBar != null)
+            baseHealthBar.value = currentHealth;
+
+        if (currentHealth <= 0)
         {
             GameOver();
         }
-        // TODO: Appeler une fonction de mise  jour de l'UI
     }
 
-    // Fonction de fin de partie
     private void GameOver()
     {
         Debug.Log("Game Over !");
