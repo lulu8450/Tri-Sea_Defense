@@ -55,6 +55,6 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over !");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Recharge la scne
+        SceneManager.LoadScene("GameOver");
     }
 }
