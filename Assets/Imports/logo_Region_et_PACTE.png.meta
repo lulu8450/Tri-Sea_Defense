@@ -1,0 +1,375 @@
+fileFormatVersion: 2
+guid: c7fa083c347f42c40974dda9f6051692
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2558694865337881101
+    second: logo_Region_et_PACTE_0
+  - first:
+      213: 5062277685474329698
+    second: logo_Region_et_PACTE_1
+  - first:
+      213: -619525553489571177
+    second: logo_Region_et_PACTE_2
+  - first:
+      213: -969625835808518361
+    second: logo_Region_et_PACTE_3
+  - first:
+      213: -3123035661179970210
+    second: logo_Region_et_PACTE_4
+  - first:
+      213: 8879869048820668710
+    second: logo_Region_et_PACTE_5
+  - first:
+      213: -152032325467478008
+    second: logo_Region_et_PACTE_6
+  - first:
+      213: 258475451028071506
+    second: logo_Region_et_PACTE_7
+  - first:
+      213: -1223623040781527333
+    second: logo_Region_et_PACTE_8
+  - first:
+      213: 6705023556263751017
+    second: logo_Region_et_PACTE_9
+  - first:
+      213: 399051727694823787
+    second: logo_Region_et_PACTE_10
+  - first:
+      213: 7917142531588630761
+    second: logo_Region_et_PACTE_11
+  - first:
+      213: -9006464188404223369
+    second: logo_Region_et_PACTE_12
+  - first:
+      213: 805767050415212266
+    second: logo_Region_et_PACTE_13
+  - first:
+      213: 241847152191514985
+    second: logo_Region_et_PACTE_14
+  - first:
+      213: 7794733519335730447
+    second: logo_Region_et_PACTE_15
+  - first:
+      213: -8015905666753505044
+    second: logo_Region_et_PACTE_16
+  - first:
+      213: 5338013992421774707
+    second: logo_Region_et_PACTE_17
+  - first:
+      213: 1041879683896358376
+    second: logo_Region_et_PACTE_18
+  - first:
+      213: -6098507878831908028
+    second: logo_Region_et_PACTE_19
+  - first:
+      213: 9219734471721226535
+    second: logo_Region_et_PACTE_20
+  - first:
+      213: -6147254762678484173
+    second: logo_Region_et_PACTE_21
+  - first:
+      213: -2549621029392945049
+    second: logo_Region_et_PACTE_22
+  - first:
+      213: 2361338929039097446
+    second: logo_Region_et_PACTE_23
+  - first:
+      213: -8275867603673369023
+    second: logo_Region_et_PACTE_24
+  - first:
+      213: 2465495223007099997
+    second: logo_Region_et_PACTE_25
+  - first:
+      213: -2689896411575392306
+    second: logo_Region_et_PACTE_26
+  - first:
+      213: 5522994084575676150
+    second: logo_Region_et_PACTE_27
+  - first:
+      213: 6071219862679104110
+    second: logo_Region_et_PACTE_28
+  - first:
+      213: 8546983117875281491
+    second: logo_Region_et_PACTE_29
+  - first:
+      213: -3103677182880354919
+    second: logo_Region_et_PACTE_30
+  - first:
+      213: 8721456934793957017
+    second: logo_Region_et_PACTE_31
+  - first:
+      213: 302887467860511293
+    second: logo_Region_et_PACTE_32
+  - first:
+      213: 1556725057843857354
+    second: logo_Region_et_PACTE_33
+  - first:
+      213: -5455898391100362331
+    second: logo_Region_et_PACTE_34
+  - first:
+      213: 686927299564197004
+    second: logo_Region_et_PACTE_35
+  - first:
+      213: 4946547075233761061
+    second: logo_Region_et_PACTE_36
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 1276, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: logo_Region_et_PACTE_2
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 0
+        width: 377
+        height: 505
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7921afe9ac00767f0800000000000000
+      internalID: -619525553489571177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_Region_et_PACTE_3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 118
+        width: 318
+        height: 257
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72f879b80723b82f0800000000000000
+      internalID: -969625835808518361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_Region_et_PACTE_5
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 177
+        width: 589
+        height: 151
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62911f23ad1ab3b70800000000000000
+      internalID: 8879869048820668710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_Region_et_PACTE_34
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 153
+        width: 625
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a176d3e151c844b0800000000000000
+      internalID: -5455898391100362331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_Region_et_PACTE_35
+      rect:
+        serializedVersion: 2
+        x: 1058
+        y: 0
+        width: 568
+        height: 505
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c84da0d4db4788900800000000000000
+      internalID: 686927299564197004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      logo_Region_et_PACTE_0: 2558694865337881101
+      logo_Region_et_PACTE_1: 5062277685474329698
+      logo_Region_et_PACTE_10: 399051727694823787
+      logo_Region_et_PACTE_11: 7917142531588630761
+      logo_Region_et_PACTE_12: -9006464188404223369
+      logo_Region_et_PACTE_13: 805767050415212266
+      logo_Region_et_PACTE_14: 241847152191514985
+      logo_Region_et_PACTE_15: 7794733519335730447
+      logo_Region_et_PACTE_16: -8015905666753505044
+      logo_Region_et_PACTE_17: 5338013992421774707
+      logo_Region_et_PACTE_18: 1041879683896358376
+      logo_Region_et_PACTE_19: -6098507878831908028
+      logo_Region_et_PACTE_2: -619525553489571177
+      logo_Region_et_PACTE_20: 9219734471721226535
+      logo_Region_et_PACTE_21: -6147254762678484173
+      logo_Region_et_PACTE_22: -2549621029392945049
+      logo_Region_et_PACTE_23: 2361338929039097446
+      logo_Region_et_PACTE_24: -8275867603673369023
+      logo_Region_et_PACTE_25: 2465495223007099997
+      logo_Region_et_PACTE_26: -2689896411575392306
+      logo_Region_et_PACTE_27: 5522994084575676150
+      logo_Region_et_PACTE_28: 6071219862679104110
+      logo_Region_et_PACTE_29: 8546983117875281491
+      logo_Region_et_PACTE_3: -969625835808518361
+      logo_Region_et_PACTE_30: -3103677182880354919
+      logo_Region_et_PACTE_31: 8721456934793957017
+      logo_Region_et_PACTE_32: 302887467860511293
+      logo_Region_et_PACTE_33: 1556725057843857354
+      logo_Region_et_PACTE_34: -5455898391100362331
+      logo_Region_et_PACTE_35: 686927299564197004
+      logo_Region_et_PACTE_36: 4946547075233761061
+      logo_Region_et_PACTE_4: -3123035661179970210
+      logo_Region_et_PACTE_5: 8879869048820668710
+      logo_Region_et_PACTE_6: -152032325467478008
+      logo_Region_et_PACTE_7: 258475451028071506
+      logo_Region_et_PACTE_8: -1223623040781527333
+      logo_Region_et_PACTE_9: 6705023556263751017
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
