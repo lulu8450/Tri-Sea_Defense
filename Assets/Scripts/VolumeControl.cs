@@ -11,9 +11,15 @@ public class VolumeControl : MonoBehaviour
         // On récupère automatiquement l'AudioSource si elle est sur le même GameObject
         audioSource = FindAnyObjectByType<AudioSource>();
 
-        // Si tu veux que le slider commence à la valeur actuelle du volume
-        if (audioSource != null && volumeSlider != null)
-            volumeSlider.value = audioSource.volume;
+        if (audioSource != null)
+        {
+            // On force le volume à 50% au lancement
+            audioSource.volume = 0.5f;
+
+            // Si le slider existe, on le synchronise avec l'AudioSource
+            if (volumeSlider != null)
+                volumeSlider.value = audioSource.volume;
+        }
 
         // Ajoute un listener sur le slider pour appeler UpdateVolume quand il change
         if (volumeSlider != null)
@@ -25,4 +31,5 @@ public class VolumeControl : MonoBehaviour
         if (audioSource != null)
             audioSource.volume = value; // applique directement le volume du slider
     }
+
 }

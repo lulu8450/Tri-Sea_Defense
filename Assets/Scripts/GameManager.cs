@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     [Header("Vagues d'ennemis")]
     public WaveManager waveManager;
 
+    [Header("Audio")]
+    public AudioClip damageSound;   // le son joué quand la base prend des dégâts
+    private AudioSource audioSource;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,10 +39,18 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         currentHealth = baseHealth;
+
         if (baseHealthBar != null)
         {
             baseHealthBar.maxValue = baseHealth;
             baseHealthBar.value = currentHealth;
+        }
+
+        // Récupère l'AudioSource attaché au GameObject
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
@@ -52,6 +64,10 @@ public class GameManager : MonoBehaviour
     {
         currentHealth -= damage;
         Debug.Log("Santé de la base : " + currentHealth);
+
+        // 🔊 jouer le son de dégâts
+        if (damageSound != null && audioSource != null)
+            audioSource.PlayOneShot(damageSound);
 
         if (baseHealthBar != null)
             baseHealthBar.value = currentHealth;
