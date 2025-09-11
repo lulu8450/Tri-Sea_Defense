@@ -141,4 +141,25 @@ public class HexGridManager : MonoBehaviour
         }
         return waypoints;
     }
+
+    // Snap a world position to the nearest grid cell
+    public Vector3 SnapToGrid(Vector3 worldPos)
+    {
+        if (hexGridTool != null)
+            return hexGridTool.SnapPosition(worldPos);
+        return worldPos;
+    }
+
+    // Check if a placement is valid for preview (for highlighting)
+    public bool CanPreviewPlace(GameObject hexPrefab, Vector3 position)
+    {
+        Vector3 snappedPosition = SnapToGrid(position);
+        if (hexGrid.ContainsKey(snappedPosition))
+            return false;
+        if (hexPrefab == pathPrefab)
+            return CanPlacePath(snappedPosition);
+        if (hexPrefab == turretPrefab)
+            return CanPlaceTurret(snappedPosition);
+        return false;
+    }
 }

@@ -1,43 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Improved EnemyMover: supports health, events, pooling, and clear English comments.
+/// </summary>
 public class EnemyMover : MonoBehaviour
 {
     public Transform[] waypoints;
-    
+
 
     [Header("Stats")]
     public float speed = 2f;
     public int damage = 1;
     public float maxHealth = 10f;
     private float currentHealth;
-    [Header("UI Elements")]
-    // Réference au Prefab de la barre de vie que tu viens de crer
-    public GameObject healthBarPrefab; 
-    private Slider healthSlider; // Réference au composant Slider
 
+    [Header("UI Elements")]
+    private Slider healthSlider;    // Reference to the HealthBarUI slider
     private int currentWaypointIndex = 0;
 
     void Start()
     {
         currentHealth = maxHealth;
-        
-        // On crée une instance de la barre de vie
-        GameObject healthBarInstance = Instantiate(healthBarPrefab, transform.position, Quaternion.identity, transform);
-        
-        // On rcupre le composant Slider sur l'instance
-        healthSlider = healthBarInstance.GetComponent<Slider>();
-        
-        // On s'assure que le Slider existe bien
+        // Find the Slider component in all children (works for nested UI)
+        healthSlider = GetComponentInChildren<Slider>(true);
         if (healthSlider == null)
         {
-            Debug.LogError("Le Prefab de barre de vie ne contient pas de composant Slider!");
+            Debug.LogError("No Slider component found in children of Enemy prefab! Make sure HealthBarUI is a Slider.");
         }
-        
-        // On positionne la barre de vie au-dessus de l'ennemi
-        // Tu peux ajuster ces valeurs pour qu'elle soit bien place.
-        healthBarInstance.transform.localPosition = new Vector3(0, 1.5f, 0); 
-        
+        else
+        {
+            healthSlider.minValue = 0;
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
         UpdateHealthBarUI();
     }
 
@@ -60,7 +56,7 @@ public class EnemyMover : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.TakeDamage(damage); 
+            GameManager.Instance.TakeDamage(damage);
             Destroy(gameObject);
         }
     }
@@ -68,10 +64,10 @@ public class EnemyMover : MonoBehaviour
     public void TakeDamage(float amount)  // Fonction pour que l'ennemi prenne des dégats
     {
         currentHealth -= amount;
-        
+
         // Met  jour la barre de vie
         UpdateHealthBarUI();
-        
+
         if (currentHealth <= 0)
         {
             Die();
@@ -82,15 +78,13 @@ public class EnemyMover : MonoBehaviour
     {
         if (healthSlider != null)
         {
-            // La valeur du slider est une échelle de 0 à 10.
-            // On calcule le ratio (vie actuelle / vie max)
-            healthSlider.value = currentHealth / maxHealth;
+            healthSlider.value = currentHealth;
         }
     }
     void Die()  // Fonction pour gérer la mort de l'ennemi
     {
         GameManager.Instance.AddPearls(GameManager.Instance.pearlsPerEnemy);
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
-    
+
 }

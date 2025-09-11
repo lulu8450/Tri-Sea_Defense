@@ -1,14 +1,20 @@
+
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq; // Ncessaire pour utiliser .FirstOrDefault()
 
 public class WaveManager : MonoBehaviour
 {
-    // On rcupre les rfrences par le nom du prefab
+    [Header("UI")]
+    public Button StartWaveButton;
+    private bool waveStarted = false;
+    // On récupère les références par le nom du prefab
     private GameObject enemyPrefab; 
     
-    // Le point de dpart des ennemis (on ne le cherche plus par tag)
-    // On va le dfinir dynamiquement.
+    // Le point de départ des ennemis (on ne le cherche plus par tag)
+    // On va le définir dynamiquement.
     private Transform spawnPoint; 
 
     // Les points de passage  transmettre  l'ennemi
@@ -17,6 +23,7 @@ public class WaveManager : MonoBehaviour
     public int enemiesPerWave = 5;
     public float timeBetweenSpawns = 1f;
     public float timeBetweenWaves = 5f;
+    private int waveLevel = 1;
 
     void Start()
     {
@@ -27,14 +34,30 @@ public class WaveManager : MonoBehaviour
             Debug.LogError("Le Prefab d'ennemi 'Enemy' n'a pas t trouv dans le dossier Resources. Vrifie le nom et le chemin !");
             return; 
         }
-        
-
     }
 
     public void StartWave()
     {
-        // Démarre le cycle de vagues
-        StartCoroutine(StartWaveCycle());
+        if (waveStarted) return;
+        waveStarted = true;
+        // Disable the start button
+        if (StartWaveButton == null)
+        {
+            var go = GameObject.Find("StartWaveButton");
+            if (go != null) StartWaveButton = go.GetComponent<Button>();
+        }
+        if (StartWaveButton != null)
+            StartWaveButton.gameObject.SetActive(false);
+
+        // Démarre le cycle de vagues seulement si tout est placé
+        if (GameManager.Instance.AllPlacedBeforeWave())
+        {
+            StartCoroutine(StartWaveCycle());
+        }
+        else
+        {
+            Debug.Log("You must place all available turrets and paths before starting the wave!");
+        }
     }
     // private IEnumerator StartWaveCycle()
     // {
@@ -74,13 +97,20 @@ public class WaveManager : MonoBehaviour
                 }
 
                 // NOUVEAU: On inverse la liste de waypoints pour que les ennemis partent du dernier hexagone
-                System.Array.Reverse(waypoints);
+            System.Array.Reverse(waypoints);
+            spawnPoint = waypoints.FirstOrDefault();
 
-                spawnPoint = waypoints.FirstOrDefault();
-
-                yield return StartCoroutine(SpawnWave());
-                Debug.Log("Vague terminée. Prochaine vague dans " + timeBetweenWaves + " secondes.");
-                yield return new WaitForSeconds(timeBetweenWaves);
+            // Calculate enemies per wave based on number of paths placed
+            int pathCount = GameManager.Instance.availablePaths;
+            enemiesPerWave = Mathf.CeilToInt(enemiesPerWave * 1.2f) + (pathCount - 1) * 2; // +2 enemies per extra path
+            Debug.Log($"Starting wave {waveLevel} with {enemiesPerWave} enemies (paths: {pathCount})");
+            yield return StartCoroutine(SpawnWave());
+            waveLevel++;
+            GameManager.Instance.AddAvailablePath(); // Add 1 more path for next wave
+            GameManager.Instance.availableTurrets = 3; // Reset turrets for next wave if you want
+            GameManager.Instance.availablePaths = GameManager.Instance.availablePaths; // Paths already incremented
+            Debug.Log($"Vague terminée. Prochaine vague dans {timeBetweenWaves} secondes. Next wave: {waveLevel}");
+            yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
 
@@ -92,17 +122,38 @@ public class WaveManager : MonoBehaviour
             yield break;
         }
 
+        // Decide how many big enemies this wave (e.g., 1 + waveLevel/3)
+        int bigEnemiesCount = Mathf.Min(waveLevel / 3 + 1, enemiesPerWave);
+        HashSet<int> bigEnemyIndices = new HashSet<int>();
+        while (bigEnemyIndices.Count < bigEnemiesCount)
+        {
+            bigEnemyIndices.Add(Random.Range(0, enemiesPerWave));
+        }
+
         for (int i = 0; i < enemiesPerWave; i++)
         {
-            // On instancie l'ennemi au point de spawn
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-
-            // On rcupre le script de mouvement et on lui assigne les waypoints
             EnemyMover enemyMover = newEnemy.GetComponent<EnemyMover>();
-
             if (enemyMover != null)
             {
                 enemyMover.waypoints = waypoints;
+                if (bigEnemyIndices.Contains(i))
+                {
+                    enemyMover.maxHealth = Mathf.RoundToInt(enemyMover.maxHealth * (1.5f + waveLevel * 0.2f));
+                    enemyMover.speed *= 0.7f;
+                    newEnemy.transform.localScale *= 1.3f;
+                }
+                else
+                {
+                    enemyMover.maxHealth = Mathf.RoundToInt(enemyMover.maxHealth * (1f + waveLevel * 0.1f));
+                }
+                // Reset currentHealth to maxHealth so enemy spawns alive
+                var currentHealthField = enemyMover.GetType().GetField("currentHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (currentHealthField != null)
+                {
+                    currentHealthField.SetValue(enemyMover, enemyMover.maxHealth);
+                }
+                enemyMover.TakeDamage(0); // Force health bar update
             }
             else
             {
@@ -110,7 +161,6 @@ public class WaveManager : MonoBehaviour
                 Destroy(newEnemy);
                 yield break;
             }
-
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
     }

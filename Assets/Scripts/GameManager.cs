@@ -1,10 +1,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
+
+
     // Le Singleton, pour pouvoir y accéder depuis n'importe où
     public static GameManager Instance { get; private set; }
+
+    [Header("Camera Movement")]
+    public float cameraMoveSpeed = 10f;
+
+    [Header("UI Texts")]
+    public TextMeshProUGUI PathText;
+    public TextMeshProUGUI PearlText;
+    public TextMeshProUGUI TurretText;
 
     [Header("Base")]
     public int baseHealth = 10;
@@ -16,6 +28,123 @@ public class GameManager : MonoBehaviour
     [Header("Vagues d'ennemis")]
     public WaveManager waveManager; // Référence au script qui gère les vagues
 
+    [Header("Placement Limits")]
+    public int availableTurrets = 3;
+    public int availablePaths = 3;
+    public int turretCost = 2;
+
+    private void Start()
+    {
+        currentPearls = 6; // Start with 6 pearls
+        // Auto-assign if not set in Inspector
+        if (PathText == null)
+        {
+            var go = GameObject.Find("PathText");
+            if (go != null) PathText = go.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+        if (PearlText == null)
+        {
+            var go = GameObject.Find("PearlText");
+            if (go != null) PearlText = go.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+        if (TurretText == null)
+        {
+            var go = GameObject.Find("TurretText");
+            if (go != null) TurretText = go.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+        UpdatePathText();
+        UpdatePearlText();
+        UpdateTurretText();
+    }
+
+    void Update()
+    {
+        HandleCameraMovement();
+    }
+    private void HandleCameraMovement()
+    {
+        if (Camera.main == null) return;
+        Vector3 move = Vector3.zero;
+        if (Input.GetKey(KeyCode.UpArrow)) move.y += 1;
+        if (Input.GetKey(KeyCode.DownArrow)) move.y -= 1;
+        if (Input.GetKey(KeyCode.LeftArrow)) move.x -= 1;
+        if (Input.GetKey(KeyCode.RightArrow)) move.x += 1;
+        if (move != Vector3.zero)
+        {
+            move.Normalize();
+            Camera.main.transform.position += move * cameraMoveSpeed * Time.deltaTime;
+        }
+    }
+    public void UpdateTurretText()
+    {
+        if (TurretText != null)
+        {
+            int maxTurretsByPearls = currentPearls / turretCost;
+            // int canPlace = Mathf.Min(availableTurrets, maxTurretsByPearls);
+            int canPlace = maxTurretsByPearls;
+            TurretText.text = "X" + canPlace;
+        }
+    }
+
+    public void UpdatePathText()
+    {
+        if (PathText != null)
+            PathText.text = "X" + availablePaths;
+    }
+
+    public void UpdatePearlText()
+    {
+        if (PearlText != null)
+            if (currentPearls < 2)
+                PearlText.text = currentPearls.ToString()+" Pearl";
+            else
+                PearlText.text = currentPearls.ToString()+" Pearls";
+    }
+
+    public bool CanPlaceTurret()
+    {
+        return availableTurrets > 0 && currentPearls >= turretCost;
+    }
+
+    public bool CanPlacePath()
+    {
+        return availablePaths > 0;
+    }
+
+    public void SpendPearls(int amount)
+    {
+        currentPearls -= amount;
+        if (currentPearls < 0) currentPearls = 0;
+        Debug.Log($"Pearls left: {currentPearls}");
+        UpdatePearlText();
+        UpdateTurretText();
+    }
+
+    public void UseTurret()
+    {
+        availableTurrets--;
+        UpdateTurretText();
+    }
+
+    public void UsePath()
+    {
+        availablePaths--;
+        UpdatePathText();
+    }
+
+    public void AddAvailablePath()
+    {
+        availablePaths++;
+        UpdatePathText();
+    }
+
+    public bool AllPlacedBeforeWave()
+    {
+        // return availableTurrets == 0 && availablePaths == 0;
+        return availablePaths == 0;
+        // // Allow starting the wave at any time
+        // return true;
+    }
     // On s'assure qu'il n'y a qu'un seul GameManager
     private void Awake()
     {
@@ -34,6 +163,8 @@ public class GameManager : MonoBehaviour
     public void AddPearls(int amount)
     {
         currentPearls += amount;
+        UpdatePearlText();
+        UpdateTurretText();
         Debug.Log("Perles actuelles : " + currentPearls);
         // TODO: Appeler une fonction de mise  jour de l'UI
     }

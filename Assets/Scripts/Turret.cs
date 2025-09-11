@@ -1,12 +1,17 @@
+using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine;
 using System.Linq; // Pour utiliser OrderBy
+using TMPro;
+
 
 /// <summary>
 /// Improved Turret script: modular, upgrade-ready, event-friendly, rotation, stable aim detection and clear English comments.
 /// </summary>
-public class Turret : MonoBehaviour
+
+public class Turret : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    private GameManager gameManager;
     [Header("Turret Stats")]
     /// <summary> Cadence de tir </summary>
     public float fireRate = 2f; 
@@ -20,6 +25,10 @@ public class Turret : MonoBehaviour
     public int level = 1;
     /// <summary> Multiplicateur d'amélioration </summary>
     public float upgradeMultiplier = 1.5f;
+
+    [Header("UI")]
+    public TextMeshProUGUI LevelText;
+    public TextMeshProUGUI UpgradeCostText;
 
     [Header("References")]
     /// <summary> Référence du point de tir du projectile </summary>
@@ -37,6 +46,12 @@ public class Turret : MonoBehaviour
 
     void Start()
     {
+        // Assign GameManager reference
+        gameManager = GameManager.Instance;
+
+        // Hide upgrade cost text by default
+        SetUpgradeCostTextVisible(false);
+
         // On cherche le FirePoint s'il n'est pas assigné  dans l'Inspector
         if (firePoint == null)
         {
@@ -57,8 +72,55 @@ public class Turret : MonoBehaviour
             }
         }
 
+        // Auto-assign LevelText if not set (search recursively for LevelText)
+        if (LevelText == null)
+        {
+            var go = GetComponentsInChildren<TextMeshProUGUI>(true)
+                .FirstOrDefault(t => t.name == "LevelText");
+            if (go != null) LevelText = go;
+        }
+        // Auto-assign UpgradeCostText if not set (search recursively for UpgradeCostText)
+        if (UpgradeCostText == null)
+        {
+            var go = GetComponentsInChildren<TextMeshProUGUI>(true)
+                .FirstOrDefault(t => t.name == "UpgradeCostText");
+            if (go != null) UpgradeCostText = go;
+        }
+        UpdateLevelText();
+        UpdateUpgradeCostText();
         // Démarrer la coroutine de recherche de cible
         StartCoroutine(FindClosestTargetCoroutine());
+    }
+
+    // Show upgrade cost text on mouse hover
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        SetUpgradeCostTextVisible(true);
+    }
+
+    // Hide upgrade cost text when mouse leaves
+    public void OnPointerExit(PointerEventData eventData)
+    {
+    SetUpgradeCostTextVisible(false);
+    }
+
+    private void UpdateUpgradeCostText()
+    {
+        if (UpgradeCostText != null)
+            UpgradeCostText.text = $"Cost {GetUpgradeCost()} pearls.";
+    }
+
+    // Call this to show/hide the upgrade cost (for hover logic)
+    public void SetUpgradeCostTextVisible(bool visible)
+    {
+        if (UpgradeCostText != null)
+            UpgradeCostText.gameObject.SetActive(visible);
+    }
+
+    private void UpdateLevelText()
+    {
+        if (LevelText != null)
+            LevelText.text = level.ToString();
     }
 
     void Update()
@@ -102,31 +164,6 @@ public class Turret : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
-    // IEnumerator FindClosestTargetCoroutine()    // NOUVEAU: Coroutine pour une recherche moins fréquente et plus performante
-    // {
-    //     // On ne va chercher la cible que toutes les 0.2 secondes
-    //     float findTargetInterval = 0.2f;
-
-    //     while (true)
-    //     {
-    //         // On trouve tous les ennemis grace  leur tag
-    //         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-    //         currentTarget = null;
-    //         float shortestDistance = Mathf.Infinity;
-
-    //         foreach (GameObject enemy in enemies)
-    //         {
-    //             float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-    //             if (distanceToEnemy <= detectionRange && distanceToEnemy < shortestDistance)
-    //             {
-    //                 shortestDistance = distanceToEnemy;
-    //                 currentTarget = enemy.transform;
-    //             }
-    //         }
-
-    //         yield return new WaitForSeconds(findTargetInterval);
-    //     }
-    // }
     IEnumerator FindClosestTargetCoroutine()
     {
         while (true)
@@ -159,30 +196,6 @@ public class Turret : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }
-
-    // void Shoot()
-    // {
-    //     if (projectilePrefab == null || firePoint == null || currentTarget == null)
-    //     {
-    //         Debug.LogError("Prefab de projectile ou FirePoint non assigné !");
-    //         return;
-    //     }
-    //     // TODO: Use object pooling for projectiles
-
-    //     // On instancie le projectile  la position du FirePoint (le bout du canon)
-    //     GameObject newProjectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-    //     // On passe la cible au script du projectile
-    //     Projectile projectileScript = newProjectile.GetComponent<Projectile>();
-    //     if (projectileScript != null)
-    //     {
-    //         projectileScript.SetTarget(currentTarget);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Le prefab de projectile n'a pas le script 'Projectile'!");
-    //     }
-    // }
     void Shoot()
     {
         if (projectilePrefab == null || firePoint == null)
@@ -191,35 +204,54 @@ public class Turret : MonoBehaviour
             return;
         }
 
-        // On instancie le projectile  la position du FirePoint (le bout du canon)
-        GameObject newProjectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        // On passe la cible au script du projectile
-        Projectile projectileScript = newProjectile.GetComponent<Projectile>();
-        if (projectileScript != null)
-        {
-            // On passe la cible actuelle
-            projectileScript.SetTarget(currentTarget);
-            // projectileScript.damage = damage; // On passe aussi les dégâts
-        }
-        else
-        {
-            Debug.LogError("Le prefab de projectile n'a pas le script 'Projectile'!");
-        }
+    // Instantiate the projectile and ensure the script is present, then set the target
+    GameObject newProjectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+    Projectile.EnsureAndSetTarget(newProjectile, currentTarget, 10f, 3f); // Replace 10f and 3f with your desired speed/lifetime if needed
     }
 
     public void UpgradeTurret() // Logique d'amélioration
     {
+        Debug.Log($"UpgradeTurret called on {gameObject.name}");
         level++;
         fireRate *= upgradeMultiplier;
         damage *= upgradeMultiplier;
         detectionRange *= 1.1f;
-        // Add VFX/SFX/UI feedback here
+        UpdateLevelText();
+        UpdateUpgradeCostText();
+        if (gameManager != null)
+            gameManager.UpdateTurretText();
+        // Change color of all children of firePoint to #D63230
+        Color upgradeColor;
+        ColorUtility.TryParseHtmlString("#D63230", out upgradeColor);
+        if (firePoint != null)
+        {
+            bool changed = false;
+            foreach (Transform child in firePoint)
+            {
+                var sr = child.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.color = upgradeColor;
+                    changed = true;
+                }
+            }
+            if (!changed) Debug.LogWarning($"No SpriteRenderer found on firePoint children for {gameObject.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"firePoint is null on {gameObject.name}");
+        }
+        Debug.Log($"Turret upgraded to level {level}!");
     }
 
     void OnDrawGizmosSelected()
     {
-        // Pour voir la porte de la tourelle dans l'diteur Unity (en bleu)
+        // Pour voir la porte de la tourelle dans l'éditeur Unity (en bleu)
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+    public int GetUpgradeCost()
+    {
+        return 2 * level; // Upgrade cost increases with level
     }
 }
