@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         baseHealth -= damage;
-        Debug.Log("Sant de la base : " + baseHealth);
+        Debug.Log("Santé de la base : " + baseHealth);
 
         if (baseHealth <= 0)
         {

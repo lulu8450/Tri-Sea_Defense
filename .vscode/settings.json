@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Tri-Sea Defense.sln"
+    "dotnet.defaultSolution": "Tri-Sea_Defense.sln"
 }
