@@ -55,6 +55,12 @@ public class GameManager : MonoBehaviour
         currentHealth = baseHealth;
         // Récupère l'AudioSource attaché au GameObject
         audioSource = GetComponent<AudioSource>();
+        // Assign baseHealthBar if not set in Inspector
+        if (baseHealthBar == null)
+        {
+            var go = GameObject.Find("BaseHealthBar");
+            if (go != null) baseHealthBar = go.GetComponent<Slider>();
+        }
         // Auto-assign
         if (audioSource == null)
         {
@@ -185,8 +191,8 @@ public class GameManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        baseHealth -= damage;
-        Debug.Log("Santé de la base : " + baseHealth);
+        // baseHealth -= damage;
+        // Debug.Log("Santé de la base : " + baseHealth);
         currentHealth -= damage;
         Debug.Log("Santé de la base : " + currentHealth);
 
