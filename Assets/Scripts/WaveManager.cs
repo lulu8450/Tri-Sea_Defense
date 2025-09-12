@@ -38,51 +38,39 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave()
     {
-        if (waveStarted) return;
-        waveStarted = true;
-        // Disable the start button
-        if (StartWaveButton == null)
-        {
-            var go = GameObject.Find("StartWaveButton");
-            if (go != null) StartWaveButton = go.GetComponent<Button>();
-        }
-        if (StartWaveButton != null)
-            StartWaveButton.gameObject.SetActive(false);
+        // if (waveStarted) return;
+        // waveStarted = true;
+        // // Disable the start button
+        // if (StartWaveButton == null)
+        // {
+        //     var go = GameObject.Find("StartWaveButton");
+        //     if (go != null) StartWaveButton = go.GetComponent<Button>();
+        // }
+        // if (StartWaveButton != null)
+        //     StartWaveButton.gameObject.SetActive(false);
 
         // Démarre le cycle de vagues seulement si tout est placé
         if (GameManager.Instance.AllPlacedBeforeWave())
         {
+            if (waveStarted) return;
+            waveStarted = true;
+            // Disable the start button
+            if (StartWaveButton == null)
+            {
+                var go = GameObject.Find("StartWaveButton");
+                if (go != null) StartWaveButton = go.GetComponent<Button>();
+            }
+            if (StartWaveButton != null)
+                StartWaveButton.gameObject.SetActive(false);
+
             StartCoroutine(StartWaveCycle());
+            
         }
         else
         {
             Debug.Log("You must place all available turrets and paths before starting the wave!");
         }
     }
-    // private IEnumerator StartWaveCycle()
-    // {
-    //     while (true)
-    //     {
-    //         // On rcupre le chemin de la grille avant de dclencher la vague
-    //         waypoints = HexGridManager.Instance.GetPathWaypoints();
-
-    //         // On vrifie qu'il y a un chemin avant de lancer la vague
-    //         if (waypoints == null || waypoints.Length == 0)
-    //         {
-    //             Debug.LogWarning("Aucun chemin d'ennemi n'est dfinis. Les ennemis ne peuvent pas spawn.");
-    //             // On attend la prochaine vague pour vrifier  nouveau
-    //             yield return new WaitForSeconds(timeBetweenWaves);
-    //             continue; // Passe  l'itration suivante de la boucle
-    //         }
-
-    //         // On dfinit le point de dpart comme le premier waypoint
-    //         spawnPoint = waypoints.FirstOrDefault();
-
-    //         yield return StartCoroutine(SpawnWave());
-    //         Debug.Log("Vague termine. Prochaine vague dans " + timeBetweenWaves + " secondes.");
-    //         yield return new WaitForSeconds(timeBetweenWaves);
-    //     }
-    // }
         private IEnumerator StartWaveCycle()
         {
             while (true)

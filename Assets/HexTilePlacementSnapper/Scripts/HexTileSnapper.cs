@@ -1,6 +1,8 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+
 
 namespace HexTilePlacementSnapper
 {
@@ -59,6 +61,7 @@ namespace HexTilePlacementSnapper
             verticalSpacing = VERTICAL_MULTIPLIER * hexLogicalSize;
         }
 
+        #if UNITY_EDITOR
         private void OnEnable()
         {
             SceneView.duringSceneGui += OnSceneGUI;
@@ -79,6 +82,7 @@ namespace HexTilePlacementSnapper
                 return;
 
             Event currentEvent = Event.current;
+        #endif
 
             // Check something was being dragged and if mouse is up (so the dragging finishes)
             if (currentEvent.type == EventType.MouseUp &&
@@ -195,3 +199,4 @@ namespace HexTilePlacementSnapper
         #endregion
     }
 }
+#endif

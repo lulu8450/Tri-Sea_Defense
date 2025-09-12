@@ -252,6 +252,9 @@ public class Turret : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public int GetUpgradeCost()
     {
-        return 2 * level; // Upgrade cost increases with level
+        // Exponential cost: base cost * (multiplier ^ (level-1))
+        float baseCost = 5f;
+        float cost = baseCost * Mathf.Pow(upgradeMultiplier, level);
+        return Mathf.CeilToInt(cost);
     }
 }

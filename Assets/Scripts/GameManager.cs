@@ -114,8 +114,8 @@ public class GameManager : MonoBehaviour
         if (TurretText != null)
         {
             int maxTurretsByPearls = currentPearls / turretCost;
-            // int canPlace = Mathf.Min(availableTurrets, maxTurretsByPearls);
-            int canPlace = maxTurretsByPearls;
+            int canPlace = Mathf.Min(availableTurrets, maxTurretsByPearls);
+            // int canPlace = maxTurretsByPearls;
             TurretText.text = "X" + canPlace;
         }
     }
