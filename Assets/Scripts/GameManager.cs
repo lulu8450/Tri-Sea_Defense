@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
-
-    // Le Singleton, pour pouvoir y accéder depuis n'importe où
     public static GameManager Instance { get; private set; }
 
     [Header("Camera Movement")]
@@ -20,23 +17,54 @@ public class GameManager : MonoBehaviour
 
     [Header("Base")]
     public int baseHealth = 10;
+    private int currentHealth;
+
+    [Header("UI")]
+    public Slider baseHealthBar;
 
     [Header("Ressources")]
     public int currentPearls = 0;
-    public int pearlsPerEnemy = 1; // Combien de perles par ennemi dtruit ?
+    public int pearlsPerEnemy = 1;
 
     [Header("Vagues d'ennemis")]
-    public WaveManager waveManager; // Référence au script qui gère les vagues
+    public WaveManager waveManager;
+
+    [Header("Audio")]
+    public AudioClip damageSound;   // le son joué quand la base prend des dégâts
+    private AudioSource audioSource;
 
     [Header("Placement Limits")]
     public int availableTurrets = 3;
     public int availablePaths = 3;
     public int turretCost = 2;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
     private void Start()
     {
         currentPearls = 6; // Start with 6 pearls
-        // Auto-assign if not set in Inspector
+        currentHealth = baseHealth;
+        // Récupère l'AudioSource attaché au GameObject
+        audioSource = GetComponent<AudioSource>();
+        // Auto-assign
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        if (baseHealthBar != null)
+        {
+            baseHealthBar.maxValue = baseHealth;
+            baseHealthBar.value = currentHealth;
+        }
         if (PathText == null)
         {
             var go = GameObject.Find("PathText");
@@ -146,46 +174,38 @@ public class GameManager : MonoBehaviour
         // return true;
     }
     // On s'assure qu'il n'y a qu'un seul GameManager
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
 
-    }
-
-    // Fonction pour ajouter des perles
     public void AddPearls(int amount)
     {
         currentPearls += amount;
         UpdatePearlText();
         UpdateTurretText();
         Debug.Log("Perles actuelles : " + currentPearls);
-        // TODO: Appeler une fonction de mise  jour de l'UI
     }
 
-    // Fonction pour réduire la vie de la base
     public void TakeDamage(int damage)
     {
         baseHealth -= damage;
         Debug.Log("Santé de la base : " + baseHealth);
+        currentHealth -= damage;
+        Debug.Log("Santé de la base : " + currentHealth);
 
-        if (baseHealth <= 0)
+        // 🔊 jouer le son de dégâts
+        if (damageSound != null && audioSource != null)
+            audioSource.PlayOneShot(damageSound);
+
+        if (baseHealthBar != null)
+            baseHealthBar.value = currentHealth;
+
+        if (currentHealth <= 0)
         {
             GameOver();
         }
-        // TODO: Appeler une fonction de mise  jour de l'UI
     }
 
-    // Fonction de fin de partie
     private void GameOver()
     {
         Debug.Log("Game Over !");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Recharge la scne
+        SceneManager.LoadScene("GameOver");
     }
 }
