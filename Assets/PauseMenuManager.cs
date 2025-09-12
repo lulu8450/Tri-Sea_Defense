@@ -38,8 +38,6 @@ public class PauseMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Échap pressé ⌨️");
-
             if (isPaused)
                 Resume();
             else
@@ -69,7 +67,11 @@ public class PauseMenuManager : MonoBehaviour
 
     void QuitGame()
     {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;    }
+        Application.Quit();
+        
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+
+    }
 }
